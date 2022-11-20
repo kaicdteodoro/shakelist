@@ -141,4 +141,11 @@ class Controller extends BaseController
     {
         return self::responseDefault($this->service->deleteQueueMusic($queue_id, $music_id));
     }
+
+
+    // OAuth
+    public function OAuthLogin()
+    {
+
+    }
 }

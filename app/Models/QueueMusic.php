@@ -37,7 +37,7 @@ class QueueMusic extends Model
         return $this->belongsTo(Queue::class);
     }
 
-    private function queryWithQueue(int $queue_id): Builder
+    public function queryWithQueue(int $queue_id): Builder
     {
         return $this->query()
             ->whereHas(
