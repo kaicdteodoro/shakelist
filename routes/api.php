@@ -23,7 +23,6 @@ Route::group(
                     ['prefix' => 'auth'],
                     static function (Router $router) {
                         $router->post('me', 'AuthController@me')->name('auth.me');
-                        $router->post('login', 'AuthController@login')->name('auth.login');
                         $router->post('logout', 'AuthController@logout')->name('auth.logout');
                         $router->post('refresh', 'AuthController@refresh')->name('auth.refresh');
                     }
@@ -40,6 +39,8 @@ Route::group(
                     }
                 );
             });
+
+        $router->post('/auth/login', 'AuthController@login')->name('auth.login');
 
         $router->group(
             [

@@ -15,7 +15,7 @@ class AuthController extends Controller
         $credentials = $request->only('email', 'password');
 
         if ($token = $this->guard()->attempt($credentials)) {
-            return $this->respondWithToken($token);
+            return $this->respondWithToken($token, \auth()->user()->name);
         }
 
         return response()->json(['error' => 'Unauthorized'], 401);
@@ -39,13 +39,18 @@ class AuthController extends Controller
         return $this->respondWithToken($this->guard()->refresh());
     }
 
-    protected function respondWithToken($token): JsonResponse
+    protected function respondWithToken(string $token, string $userName = null): JsonResponse
     {
-        return response()->json([
+        $response = [
             'access_token' => $token,
             'token_type' => 'bearer',
             'expires_in' => $this->guard()->factory()->getTTL() * 60
-        ]);
+        ];
+
+        if (!empty($userName)) {
+            $response["name"] = $userName;
+        }
+        return response()->json($response);
     }
 
     public function guard(): Guard
