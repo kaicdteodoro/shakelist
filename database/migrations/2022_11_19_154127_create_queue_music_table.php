@@ -18,6 +18,7 @@ return new class extends Migration
             $table->foreignId('queue_id')->constrained('queues');
             $table->string('reference_name');
             $table->string('url');
+            $table->unsignedInteger('order')->nullable();
             $table->boolean('done')->default(false);
             $table->timestamps();
         });

@@ -3,9 +3,9 @@
 namespace App\Services;
 
 use App\Models\Queue;
-use Illuminate\Database\Eloquent\Builder;
 use Mockery\Exception;
 use App\Models\QueueMusic;
+use Illuminate\Database\Eloquent\Builder;
 
 
 class QueueService
@@ -71,10 +71,26 @@ class QueueService
                         return $when->whereIn('id', $ids);
                     }
                 )
+                ->orderBy('created_at', 'DESC')
                 ->get()
                 ->toArray();
 
             $this->setDataResponse($queues);
+        } catch (Exception $exception) {
+            $this->setErrorResponse(
+                $exception->getMessage(),
+                $exception->getCode() ?: 500
+            );
+        }
+
+        return $this->responseDefault();
+    }
+
+    public function createQueue(array $inputs): array
+    {
+        try {
+            $queue = $this->queue->query()->create($inputs);
+            $this->setDataResponse($queue->toArray());
         } catch (Exception $exception) {
             $this->setErrorResponse(
                 $exception->getMessage(),
@@ -131,6 +147,7 @@ class QueueService
                         return $when->whereIn('id', $ids);
                     }
                 )
+                ->orderBy("order")
                 ->get()
                 ->toArray();
 

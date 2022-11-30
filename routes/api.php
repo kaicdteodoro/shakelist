@@ -44,7 +44,7 @@ Route::group(
 
         $router->group(
             [
-                'middleware' => 'oauth',
+              //  'middleware' => 'oauth',
                 'prefix' => 'queue/{queue_id}/music',
             ],
             static function (Router $router) {
@@ -56,6 +56,6 @@ Route::group(
             }
         );
 
-        $router->get('/oauth/login', 'Controller@OAuthLogin')->name('oauth.login');
+       // $router->get('/oauth/login', 'Controller@OAuthLogin')->name('oauth.login');
     }
 );

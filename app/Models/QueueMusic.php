@@ -13,12 +13,13 @@ class QueueMusic extends Model
 
     protected $table = 'queue_music';
 
-    protected $fillable = ['queue_id', 'reference_name', 'url', 'done'];
+    protected $fillable = ['queue_id', 'reference_name', 'url', 'order', 'done'];
 
     protected $casts = [
         'queue_id' => 'int',
         'reference_name' => 'string',
         'url' => 'string',
+        'order' => 'int',
         'done' => 'boolean'
     ];
 
