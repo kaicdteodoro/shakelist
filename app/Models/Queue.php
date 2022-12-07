@@ -45,4 +45,9 @@ class Queue extends Model
                 }
             );
     }
+
+    public function nextOrder()
+    {
+        return $this->musics()->max('order') + 1;
+    }
 }

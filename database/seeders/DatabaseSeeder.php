@@ -21,7 +21,13 @@ class DatabaseSeeder extends Seeder
             ->each(static function (User $user) {
                 $user->queues()->save(Queue::factory()->make());
                 foreach ($user->queues()->cursor() as $queue) {
-                    $queue->musics()->saveMany(QueueMusic::factory(10)->make());
+                    $musics = $queue->musics();
+                    $musics->saveMany(QueueMusic::factory(10)->make());
+
+                    $musics->each(static function (QueueMusic $music) use ($queue) {
+                        $music->order = $queue->nextOrder();
+                        $music->save();
+                    });
                 }
             });
     }

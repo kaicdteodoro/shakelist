@@ -165,12 +165,14 @@ class QueueService
     public function createMusicQueue(int $queue_id, array $music): array
     {
         try {
+            $queue = $this->queue->query()->find($queue_id);
             if (!array_key_exists('queue_id', $music)) {
-                $music['queue_id'] = $queue_id;
+                $music['queue_id'] = $queue->id;
             }
 
-            $this->music->query()->create($music);
-            $this->setDataResponse();
+            $music['order'] = $queue->nextOrder();
+            $newMusic = $this->music->query()->create($music);
+            $this->setDataResponse($newMusic->toArray());
         } catch (Exception $exception) {
             $this->setErrorResponse(
                 $exception->getMessage(),
