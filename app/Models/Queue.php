@@ -2,8 +2,8 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -23,7 +23,7 @@ class Queue extends Model
 
     public const rules = ['name' => 'required|string', 'closing_date' => 'date'];
 
-    public const rulesUpdate = ['name' => 'string', 'closing_date' => 'date'];
+    public const rulesUpdate = ['name' => 'string', 'closing_date' => 'nullable|date'];
 
     public function user(): BelongsTo
     {

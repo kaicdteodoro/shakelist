@@ -137,9 +137,10 @@ class QueueService
         return $this->responseDefault();
     }
 
-    public function getQueueMusic(int $queue_id, array $ids = []): array
+    public function getQueueMusic(int $queue_id, array $ids = [], array $queryParams = []): array
     {
         try {
+            $show_done = (bool)$queryParams['show_done'];
             $queues = $this->music->queryWithQueue($queue_id)
                 ->when(
                     !empty($ids),
@@ -147,6 +148,9 @@ class QueueService
                         return $when->whereIn('id', $ids);
                     }
                 )
+                ->when(!$show_done, static function (Builder $when) {
+                    return $when->where('done', false);
+                })
                 ->orderBy("order")
                 ->get()
                 ->toArray();

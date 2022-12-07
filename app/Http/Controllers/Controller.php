@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Queue;
-use App\Models\QueueMusic;
 use Mockery\Exception;
+use App\Models\QueueMusic;
 use Illuminate\Http\Request;
 use App\Services\QueueService;
 use Illuminate\Http\JsonResponse;
@@ -103,9 +103,10 @@ class Controller extends BaseController
 
     // QueueMusic session
 
-    public function QueueMusicAll(int $queue_id): JsonResponse
+    public function QueueMusicAll(int $queue_id, Request $request): JsonResponse
     {
-        return self::responseDefault($this->service->getQueueMusic($queue_id));
+       $queryParms = $request->only(['show_done']);
+        return self::responseDefault($this->service->getQueueMusic($queue_id, [], $queryParms));
     }
 
     public function QueueMusicCreate(int $queue_id, Request $request): JsonResponse

@@ -2,8 +2,8 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
@@ -25,12 +25,16 @@ class QueueMusic extends Model
 
     public const rules = [
         'reference_name' => 'required|string',
-        'url' => 'required|string'
+        'url' => 'required|string',
+        'done' => 'boolean',
+        'order' => 'int',
     ];
 
     public const rulesUpdate = [
         'reference_name' => 'string',
-        'url' => 'string'
+        'done' => 'boolean',
+        'url' => 'string',
+        'order' => 'int',
     ];
 
     public function queue(): BelongsTo
