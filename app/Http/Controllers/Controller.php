@@ -143,6 +143,13 @@ class Controller extends BaseController
         return self::responseDefault($this->service->deleteQueueMusic($queue_id, $music_id));
     }
 
+    public function QueueMusicDirection(int $queue_id, int $music_id, string $direction): JsonResponse
+    {
+        $up = $direction === 'up';
+        return self::responseDefault($this->service->turnQueueMusicDirection($queue_id, $music_id, $up));
+    }
+
+
 
     // OAuth
     public function OAuthLogin()

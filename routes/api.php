@@ -44,7 +44,7 @@ Route::group(
 
         $router->group(
             [
-              //  'middleware' => 'oauth',
+                //  'middleware' => 'oauth',
                 'prefix' => 'queue/{queue_id}/music',
             ],
             static function (Router $router) {
@@ -52,10 +52,14 @@ Route::group(
                 $router->put('/', 'Controller@QueueMusicCreate')->name('queue_music.create');
                 $router->get('/{music_id}', 'Controller@QueueMusicFind')->name('queue_music.find');
                 $router->patch('/{music_id}', 'Controller@QueueMusicUpdate')->name('queue_music.update');
+                //TODO:verificar outros modos de melhorar o rate limit ou diminuir a quantidade de request feitas
+                $router->middleware('throttle:60,1')
+                    ->post('/{music_id}/{direction}', 'Controller@QueueMusicDirection')
+                    ->whereIn('direction', ['up', 'down'])
+                    ->name('queue_music.direction');
                 $router->delete('/{music_id}', 'Controller@QueueMusicDelete')->name('queue_music.delete');
             }
         );
-
-       // $router->get('/oauth/login', 'Controller@OAuthLogin')->name('oauth.login');
+        // $router->get('/oauth/login', 'Controller@OAuthLogin')->name('oauth.login');
     }
 );

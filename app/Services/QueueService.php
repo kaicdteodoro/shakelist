@@ -205,6 +205,41 @@ class QueueService
         return $this->responseDefault();
     }
 
+    public function turnQueueMusicDirection(int $queue_id, int $mucis_id, bool $up): array
+    {
+        try {
+            $music = $this->music->queryWithQueue($queue_id)
+                ->find($mucis_id);
+
+            $musicToChange = $this->music->queryWithQueue($queue_id)
+                ->where('done', false)
+                ->where(
+                    'order',
+                    ($up ? '<' : '>'),
+                    $music->order
+                )
+                ->orderBy('order', ($up ? 'DESC' : 'ASC'))
+                ->first();
+
+            if ($music && $musicToChange) {
+                $aux = $music->order;
+                $music->order = $musicToChange->order;
+                $musicToChange->order = $aux;
+                $music->save();
+                $musicToChange->save();
+            }
+
+            $this->setDataResponse();
+        } catch (Exception $exception) {
+            $this->setErrorResponse(
+                $exception->getMessage(),
+                $exception->getCode() ?: 500
+            );
+        }
+
+        return $this->responseDefault();
+    }
+
     public function deleteQueueMusic(int $queue_id, int $music_id): array
     {
         try {
