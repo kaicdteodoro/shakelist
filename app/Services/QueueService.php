@@ -243,9 +243,33 @@ class QueueService
     public function deleteQueueMusic(int $queue_id, int $music_id): array
     {
         try {
-            $this->music->queryWithQueue($queue_id)
-                ->find($music_id)
-                ?->delete();
+            $music = $this->music->queryWithQueue($queue_id)
+                ->find($music_id);
+            $order = $music?->order;
+            $music?->delete();
+
+            $this->reorderQueueMusic($queue_id, $order);
+            $this->setDataResponse();
+        } catch (Exception $exception) {
+            $this->setErrorResponse(
+                $exception->getMessage(),
+                $exception->getCode() ?: 500
+            );
+        }
+
+        return $this->responseDefault();
+    }
+
+    public function reorderQueueMusic(int $queue_id, int $order): array
+    {
+        try {
+            $musics = $this->music->queryWithQueue($queue_id)
+                ->where('order', '>=', $order);
+            foreach ($musics->cursor() as $music) {
+                $music->order = $order;
+                $music->save();
+                $order++;
+            }
             $this->setDataResponse();
         } catch (Exception $exception) {
             $this->setErrorResponse(
