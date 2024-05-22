@@ -1,8 +1,10 @@
+import App from '../../components/App.vue';
+
 const routes = [
     {
         path: '/',
         name: 'home',
-        component: () => import('../../components/App.vue')
+        component: App
     }
 ];
 

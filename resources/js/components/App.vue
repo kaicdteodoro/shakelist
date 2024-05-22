@@ -1,13 +1,24 @@
 <script>
 export default {
-    name: "App"
+    name: "App",
+    data: () => ({drawer: null}),
 }
 </script>
 
 <template>
-    <h1> Hello, Vuejs with Laravel </h1>
+    <v-app id="inspire">
+        <v-navigation-drawer v-model="drawer">
+            <!--  -->
+        </v-navigation-drawer>
+
+        <v-app-bar>
+            <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
+
+            <v-app-bar-title>Application</v-app-bar-title>
+        </v-app-bar>
+
+        <v-main>
+            <router-view/>
+        </v-main>
+    </v-app>
 </template>
-
-<style scoped>
-
-</style>
